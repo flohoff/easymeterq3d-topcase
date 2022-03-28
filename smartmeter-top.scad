@@ -2,13 +2,13 @@
 $casewidth=110;
 $caseheight=30;
 $casedepth=35;
-$casewall=1;
+$casewall=2;
 
 $screwdistance=61;
 $screwdiameter=4;
 $screwblockdepth=3.5;
 $screwblockwidth=8;
-$screwopeningdiameter=7;
+$screwopeningdiameter=6;
 
 $irborex=69;
 $irborey=15;
@@ -16,7 +16,7 @@ $irledborediameter=4.8;
 $irledmountdiameter=8;
 $irledheight=5.1;
 
-$pcbboredistx=51;
+$pcbboredistx=52;
 $pcbboredisty=25;
 $pcbborediameter=1.8;
 $pcbmountdiameter=4;
@@ -24,7 +24,7 @@ $pcbmountheight=15;
 $pcboffsetx=4.5;
 
 
-$slidedistance=84;
+$slidedistance=85;
 $slidebasewidth=3;
 $slideheadwidth=8;
 $slideheadheight=2;
@@ -35,10 +35,10 @@ $slideblockwidth=$slideheadwidth+1;
 $slideblockdepth=$slidedepth+1;
 $slideblockheight=$slideheight+1;
 
-$pcbthickness=1.9;
+$pcbthickness=2.2;
 $musbz=$pcbmountheight+$pcbthickness;
 $musbwidth=9;
-$musbheight=3;
+$musbheight=3.5;
 
 module case() {
   difference() {
@@ -177,7 +177,7 @@ difference() {
 
 $coverbasethickness=2;
 $coverintake=5;
-$coverintakewall=1;
+$coverintakewall=2;
 
 translate([0,$casedepth+10,0]) {
     cube([$casewidth, $casedepth, $coverbasethickness]);
