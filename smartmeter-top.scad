@@ -2,33 +2,38 @@
 $casewidth=110;
 $caseheight=30;
 $casedepth=35;
-$casewall=2;
+$casewall=1.5;
 
 $screwdistance=61;
 $screwdiameter=4;
 $screwblockdepth=3.5;
 $screwblockwidth=8;
-$screwopeningdiameter=6;
+$screwopeningdiameter=8;
 
 $irborex=69;
 $irborey=15;
-$irledborediameter=4.8;
+$irledborediameter=5;
 $irledmountdiameter=8;
-$irledheight=5.1;
+$irledheight=6.5;
+
 
 $pcbboredistx=52;
 $pcbboredisty=25;
 $pcbborediameter=1.8;
 $pcbmountdiameter=4;
 $pcbmountheight=15;
-$pcboffsetx=4.5;
+
+/* Offset PCB -> Center Borehole x */
+$pcbboreoffset_x_left=3;
+/* The PCB should touch the wall */
+$pcboffsetx=$casewall+$pcbboreoffset_x_left;
 
 
 $slidedistance=85;
 $slidebasewidth=3;
 $slideheadwidth=8;
 $slideheadheight=2;
-$slideheight=4.5;
+$slideheight=4;
 $slidedepth=12;
 
 $slideblockwidth=$slideheadwidth+1;
@@ -38,7 +43,7 @@ $slideblockheight=$slideheight+1;
 $pcbthickness=2.2;
 $musbz=$pcbmountheight+$pcbthickness;
 $musbwidth=9;
-$musbheight=3.5;
+$musbheight=3;
 
 module case() {
   difference() {
@@ -170,7 +175,7 @@ difference() {
   screwblocks(1);
   screwopenings();
   slides();
-  translate([0,$casedepth/2,$musbz]) {
+  translate([0,$casedepth/2,$musbz+$casewall]) {
       microusb();
   }
 }
