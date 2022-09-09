@@ -1,7 +1,7 @@
 
 $casewidth=110;
 $caseheight=30;
-$casedepth=35;
+$casedepth=42;
 $casewall=1.5;
 
 $screwdistance=61;
@@ -10,7 +10,8 @@ $screwblockdepth=3.5;
 $screwblockwidth=8;
 $screwopeningdiameter=8;
 
-$irborex=69;
+/* Relative to center back point */
+$irborex=14;
 $irborey=15;
 $irledborediameter=5;
 $irledmountdiameter=8;
@@ -28,6 +29,9 @@ $pcbboreoffset_x_left=3;
 /* The PCB should touch the wall */
 $pcboffsetx=$casewall+$pcbboreoffset_x_left;
 
+/* Needs to be more to not let the PCB touch the notch */
+$pcboffsety=12;
+
 
 $slidedistance=85;
 $slidebasewidth=3;
@@ -40,19 +44,39 @@ $slideblockwidth=$slideheadwidth+1;
 $slideblockdepth=$slidedepth+1;
 $slideblockheight=$slideheight+1;
 
-$pcbthickness=2.2;
+$pcbthickness=1.8;
 $musbz=$pcbmountheight+$pcbthickness;
 $musbwidth=9;
-$musbheight=3;
+$musbheight=3.5;
 
-module case() {
-  difference() {
-     cube([$casewidth, $casedepth, $caseheight]);
-     translate([$casewall, $casewall, $casewall]) {
-       cube([$casewidth-2*$casewall, $casedepth-2*$casewall, $caseheight-$casewall]);
+$notchwidth=10;
+$notchdepth=6;
+
+module case_simple() {
+  translate([-$casewidth/2,0,0]) {
+      difference() {
+         cube([$casewidth, $casedepth, $caseheight]);
+         translate([$casewall, $casewall, $casewall]) {
+           cube([$casewidth-2*$casewall, $casedepth-2*$casewall, $caseheight-$casewall]);
+         }
      }
   }
 }
+
+module case() {
+    difference() {
+        union() {
+            case_simple();
+            translate([-$notchwidth/2-$casewall,0,0]) {
+                cube([$notchwidth+2*$casewall, $notchdepth+$casewall, $caseheight]);
+            }
+        }
+        translate([-$notchwidth/2,0,0]) {
+            cube([$notchwidth, $notchdepth, $caseheight]);
+        }
+    }
+}
+
 
 module irled(diameter) {
   translate([$irborex, $irborey, 0]) {
@@ -61,7 +85,7 @@ module irled(diameter) {
 }
 
 module pcbmount(diameter) {
-  translate([$pcboffsetx, $casedepth/2-$pcbboredisty/2, $casewall]) {
+  translate([-$casewidth/2+$pcboffsetx,$pcboffsety,$casewall]) {
   union() {
       cylinder(h=$pcbmountheight, d=diameter, $fn=12);
       translate([$pcbboredistx, 0, 0]) {
@@ -73,7 +97,7 @@ module pcbmount(diameter) {
       translate([0, $pcbboredisty, 0]) {
         cylinder(h=$pcbmountheight, d=diameter, $fn=12);
       }
-    }
+  }
   }
 }
 
@@ -100,21 +124,21 @@ module screwblock(bore) {
 }
 
 module screwblocks(bore) {
-    translate([$casewidth/2-$screwdistance/2,0,0]) {
+    translate([-$screwdistance/2,0,0]) {
         screwblock(bore);
     }
-    translate([$casewidth/2+$screwdistance/2,0,0]) {
+    translate([+$screwdistance/2,0,0]) {
         screwblock(bore);
     }
 }
 
 module screwopenings() {
-    translate([$casewidth/2-$screwdistance/2,$casedepth,$screwblockwidth/2]) {
+    translate([-$screwdistance/2,$casedepth,$screwblockwidth/2]) {
         rotate([90,0,0]) {
             cylinder(h=$casewall, d=$screwopeningdiameter, $fn=12);
         }
     }
-    translate([$casewidth/2+$screwdistance/2,$casedepth,$screwblockwidth/2]) {
+    translate([+$screwdistance/2,$casedepth,$screwblockwidth/2]) {
         rotate([90,0,0]) {
             cylinder(h=$casewall, d=$screwopeningdiameter, $fn=12);
         }
@@ -133,10 +157,10 @@ module slide() {
 }
 
 module slides() {
-    translate([$casewidth/2-$slidedistance/2,0,0]) {
+    translate([-$slidedistance/2,0,0]) {
         slide();
     }
-    translate([$casewidth/2+$slidedistance/2,0,0]) {
+    translate([+$slidedistance/2,0,0]) {
         slide();
     }
 }
@@ -148,10 +172,10 @@ module slideblock() {
 }
 
 module slideblocks() {
-    translate([$casewidth/2-$slidedistance/2,0,0]) {
+    translate([-$slidedistance/2,0,0]) {
         slideblock();
     }
-    translate([$casewidth/2+$slidedistance/2,0,0]) {
+    translate([+$slidedistance/2,0,0]) {
         slideblock();
     }
 }
@@ -161,6 +185,10 @@ module microusb() {
         cube([$casewall, $musbwidth, $musbheight]);
     }
 }
+
+
+
+
 
 difference() {    
   union() {
@@ -175,22 +203,72 @@ difference() {
   screwblocks(1);
   screwopenings();
   slides();
-  translate([0,$casedepth/2,$musbz+$casewall]) {
+  translate([-$casewidth/2,$pcboffsety+$pcbboredisty/2,$musbz+$casewall]) {
       microusb();
   }
 }
+
+
+
 
 $coverbasethickness=2;
 $coverintake=5;
 $coverintakewall=2;
 
-translate([0,$casedepth+10,0]) {
-    cube([$casewidth, $casedepth, $coverbasethickness]);
-    translate([$casewall, $casewall, $coverbasethickness]) {
-        difference() {
-            cube([$casewidth-2*$casewall, $casedepth-2*$casewall, $coverintake]);
-            translate([$coverintakewall, $coverintakewall, 0]) {
-                cube([$casewidth-2*$casewall-$coverintakewall*2, $casedepth-2*$casewall-2*$coverintakewall, $coverintake]);
+module cover_simple() {
+    difference() {
+        translate([-$casewidth/2,0,0]) {
+            cube([$casewidth, $casedepth, $coverbasethickness]);
+        }
+        notchplus($notchwidth, $notchdepth, $coverbasethickness);        
+    }
+}
+
+$intakewidth=$casewidth-2*$casewall;
+$intakedepth=$casedepth-2*$casewall;
+
+module cover_intake_simple() {
+    translate([-$casewidth/2+$casewall, $casewall, 0]) {
+          difference() {
+            cube([$intakewidth, $intakedepth, $coverintake]);
+            translate([$coverintakewall, $coverintakewall,0]) {
+                cube([$intakewidth-2*$coverintakewall,
+                        $intakedepth-2*$coverintakewall,
+                        $coverintake]);
+            }
+          }
+    }
+}
+
+module notchplus(width, depth, height) {
+    translate([-width/2,0,0]) {
+        cube([width, depth, height]);
+    }
+}
+
+module cover_intake() {
+    difference() {
+        union() {
+            translate([0,$casewall, 0]) {
+                notchplus($notchwidth+$casewall*2+$coverintakewall*2,
+                    $notchdepth+$coverintakewall,
+                    $coverintake);
+            }
+            cover_intake_simple();
+        }
+        translate([0,$casewall,0]) {
+            notchplus($notchwidth+$casewall*2, $notchdepth,$coverintake);
+        }
+    }
+}
+
+
+mirror([0,1,0]) {
+    translate([0,10,0]) {
+        union() {
+            cover_simple();
+            translate([0,0,$coverbasethickness]) {
+                cover_intake();
             }
         }
     }
