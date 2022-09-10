@@ -6,7 +6,7 @@ $casewall=1.5;
 
 $screwdistance=61;
 $screwdiameter=4;
-$screwblockdepth=3.5;
+$screwblockdepth=4.5;
 $screwblockwidth=8;
 $screwopeningdiameter=8;
 
