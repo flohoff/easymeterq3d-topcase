@@ -36,11 +36,11 @@ $pcboffsety=12;
 $slidedistance=85;
 $slidebasewidth=3;
 $slideheadwidth=8;
-$slideheadheight=2;
+$slideheadheight=2.5;
 $slideheight=4;
 $slidedepth=12;
 
-$slideblockwidth=$slideheadwidth+1;
+$slideblockwidth=$slideheadwidth+2;
 $slideblockdepth=$slidedepth+1;
 $slideblockheight=$slideheight+1;
 
