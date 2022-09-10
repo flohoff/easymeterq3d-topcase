@@ -4,7 +4,7 @@ $caseheight=30;
 $casedepth=42;
 $casewall=1.5;
 
-$screwdistance=61;
+$screwdistance=62;
 $screwdiameter=4;
 $screwblockdepth=4.5;
 $screwblockwidth=8;
@@ -13,7 +13,7 @@ $screwopeningdiameter=8;
 /* Relative to center back point */
 $irborex=14;
 $irborey=15;
-$irledborediameter=5;
+$irledborediameter=5.5;
 $irledmountdiameter=8;
 $irledheight=6.5;
 
