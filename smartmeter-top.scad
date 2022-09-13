@@ -13,9 +13,9 @@ $screwopeningdiameter=8;
 /* Relative to center back point */
 $irborex=14;
 $irborey=15;
-$irledborediameter=5.5;
-$irledmountdiameter=8;
-$irledheight=6.5;
+$irledborediameter=3.2;
+$irledmountdiameter=5;
+$irledheight=4;
 
 
 $pcbboredistx=52;
