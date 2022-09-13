@@ -5,10 +5,10 @@ $casedepth=42;
 $casewall=1.5;
 
 $screwdistance=62;
-$screwdiameter=4;
+$screwdiameter=4.3;
 $screwblockdepth=4.5;
 $screwblockwidth=8;
-$screwopeningdiameter=8;
+$screwopeningdiameter=9;
 
 /* Relative to center back point */
 $irborex=14;
